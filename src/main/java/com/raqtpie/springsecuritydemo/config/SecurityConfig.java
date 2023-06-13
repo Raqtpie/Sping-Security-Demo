@@ -43,6 +43,7 @@ public class SecurityConfig {
 
     /**
      * 密码加密器
+     *
      * @return PasswordEncoder 密码加密器
      */
     @Bean
@@ -53,6 +54,7 @@ public class SecurityConfig {
     /**
      * 配置安全过滤器链
      * WebSecurityConfigurerAdapter已弃用, 采取组件形式的安全配置(Spring推荐)
+     *
      * @param http HttpSecurity
      * @return SecurityFilterChain
      * @throws Exception Exception
@@ -60,33 +62,29 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                //关闭csrf
-                .csrf().disable()
-                //不通过Session获取SecurityContext
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
+
                 .authorizeRequests()
                 // 对于登录接口 允许匿名访问
                 .antMatchers("/user/login").anonymous()
                 // 开放open接口 允许匿名访问 且 登录用户也可以访问
                 .antMatchers("/open/resource").permitAll()
                 // 除上面外的所有请求全部需要鉴权认证
-                .anyRequest().authenticated()
-                .withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>(){
+                .anyRequest().authenticated().withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
                     @Override
                     public <O extends FilterSecurityInterceptor> O postProcess(O object) {
                         object.setSecurityMetadataSource(cfisms());
                         object.setAccessDecisionManager(cadm());
                         return object;
                     }
-                });
+                }).and()
+                //关闭csrf
+                .csrf().disable()
+                //不通过Session获取SecurityContext
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
 
-        http
-                .exceptionHandling()
-                .authenticationEntryPoint(authenticationEntryPoint)
-                .accessDeniedHandler(accessDeniedHandler);
+        http.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint).accessDeniedHandler(accessDeniedHandler);
 
         http.cors();
 

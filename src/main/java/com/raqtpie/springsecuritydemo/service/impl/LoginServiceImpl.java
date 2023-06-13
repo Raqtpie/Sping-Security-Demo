@@ -28,7 +28,7 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public ResponseResult<Map<String, String>> login(User user) throws Exception {
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user.getUserName(), user.getPassword());
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
         Authentication authenticate = authenticationConfiguration.getAuthenticationManager().authenticate(authenticationToken);
 
         if (authenticate == null) {
@@ -36,8 +36,7 @@ public class LoginServiceImpl implements LoginService {
         }
 
         LoginUser loginUser = (LoginUser) authenticate.getPrincipal();
-        User userTemp = loginUser.getUser();
-        String userJson = JSONUtil.parseObj(userTemp).remove("password").toString();
+        String userJson = JSONUtil.parseObj(loginUser).remove("user.password").toString();
         String token = JwtUtil.generateToken(userJson);
         log.info("token为{}", token);
 

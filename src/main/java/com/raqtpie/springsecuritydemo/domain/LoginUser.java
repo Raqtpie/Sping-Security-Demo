@@ -35,7 +35,7 @@ public class LoginUser implements UserDetails {
 
     @Override
     public String getUsername() {
-        return user.getUserName();
+        return user.getUsername();
     }
 
     @Override
@@ -50,11 +50,11 @@ public class LoginUser implements UserDetails {
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return user.getDelFlag() == 0;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return user.getStatus() == 0;
+        return true;
     }
 }
