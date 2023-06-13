@@ -24,7 +24,6 @@ public class CustomAccessDecisionManager implements AccessDecisionManager {
      */
     @Override
     public void decide(Authentication authentication, Object object, Collection<ConfigAttribute> configAttributes) throws AccessDeniedException, InsufficientAuthenticationException {
-        // FIXME:authorities.authorities为空
         // 当前请求需要的角色信息
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 

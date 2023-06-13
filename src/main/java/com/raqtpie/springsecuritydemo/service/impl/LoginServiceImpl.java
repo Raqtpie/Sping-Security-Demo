@@ -36,7 +36,8 @@ public class LoginServiceImpl implements LoginService {
         }
 
         LoginUser loginUser = (LoginUser) authenticate.getPrincipal();
-        String userJson = JSONUtil.parseObj(loginUser).remove("user.password").toString();
+        loginUser.getUser().setPassword(null);
+        String userJson = JSONUtil.parseObj(loginUser).toString();
         String token = JwtUtil.generateToken(userJson);
         log.info("token为{}", token);
 

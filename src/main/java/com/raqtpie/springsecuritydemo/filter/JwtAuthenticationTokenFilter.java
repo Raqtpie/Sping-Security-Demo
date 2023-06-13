@@ -41,13 +41,12 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             throw new RuntimeException("用户未登录或token已过期");
         }
         String userJson = JwtUtil.extractSubject(token);
-        User user = JSONUtil.toBean(userJson, User.class);
+        LoginUser loginUser = JSONUtil.toBean(userJson, LoginUser.class);
         LambdaQueryWrapper<User> userLambdaQueryWrapper = new LambdaQueryWrapper<>();
-        userLambdaQueryWrapper.eq(User::getUsername, user.getUsername());
-        user = userDao.selectOne(userLambdaQueryWrapper);
-        LoginUser loginUser = new LoginUser();
+        userLambdaQueryWrapper.eq(User::getUsername, loginUser.getUser().getUsername());
+        User user = userDao.selectOne(userLambdaQueryWrapper);
         loginUser.setUser(user);
-        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(loginUser, null, null);
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(loginUser, null, loginUser.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
         filterChain.doFilter(request, response);
     }
