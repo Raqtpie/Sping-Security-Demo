@@ -8,6 +8,7 @@ import com.raqtpie.springsecuritydemo.common.ResponseResult;
 import com.raqtpie.springsecuritydemo.domain.User;
 import com.raqtpie.springsecuritydemo.service.TokenBlackListService;
 import com.raqtpie.springsecuritydemo.utils.JwtUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 @Service
+@Slf4j
 public class LoginServiceImpl implements LoginService {
     @Autowired
     private TokenBlackListService tokenBlackListService;
@@ -37,6 +39,8 @@ public class LoginServiceImpl implements LoginService {
         User userTemp = loginUser.getUser();
         String userJson = JSONUtil.parseObj(userTemp).remove("password").toString();
         String token = JwtUtil.generateToken(userJson);
+        log.info("token为{}", token);
+
         Map<String, String> map = new HashMap<>();
         map.put("token", token);
 

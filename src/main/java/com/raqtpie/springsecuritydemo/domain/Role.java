@@ -18,8 +18,8 @@ public class Role implements Serializable {
     /**
      * 主键 id
      */
-    @TableId(value = "user_id")
-    private Long userId;
+    @TableId(value = "id")
+    private Long id;
     /**
      * 角色名称
      */

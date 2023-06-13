@@ -30,9 +30,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException("用户不存在");
         }
-        LambdaQueryWrapper<Role> roleLambdaQueryWrapper = new LambdaQueryWrapper<>();
-        roleLambdaQueryWrapper.eq(Role::getUserId, user.getId());
-        List<Role> roles = roleDao.selectList(roleLambdaQueryWrapper);
+        List<Role> roles = roleDao.getListByUserId(user.getId());
         LoginUser loginUser = new LoginUser();
         loginUser.setUser(user);
         loginUser.setRoles(roles);

@@ -24,20 +24,20 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String token = request.getHeader("Authorization");
-        if (tokenBlackListService.isTokenBlacklisted(token)) {
-            throw new RuntimeException("token已失效");
-        }
-        if (JwtUtil.isTokenEffective(token)) {
-            throw new RuntimeException("token非法");
-        }
-        if (StrUtil.isBlank(token) || JwtUtil.isTokenExpired(token)) {
-            throw new RuntimeException("用户未登录或token已过期");
-        }
-        String userJson = JwtUtil.extractSubject(token);
-        LoginUser user = JSONUtil.toBean(userJson, LoginUser.class);
-        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(user, null, null);
-        SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+//        String token = request.getHeader("Authorization");
+//        if (tokenBlackListService.isTokenBlacklisted(token)) {
+//            throw new RuntimeException("token已失效");
+//        }
+//        if (JwtUtil.isTokenEffective(token)) {
+//            throw new RuntimeException("token非法");
+//        }
+//        if (StrUtil.isBlank(token) || JwtUtil.isTokenExpired(token)) {
+//            throw new RuntimeException("用户未登录或token已过期");
+//        }
+//        String userJson = JwtUtil.extractSubject(token);
+//        LoginUser user = JSONUtil.toBean(userJson, LoginUser.class);
+//        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(user, null, null);
+//        SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
         filterChain.doFilter(request, response);
     }
 }

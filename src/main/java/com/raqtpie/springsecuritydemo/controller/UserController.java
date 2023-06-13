@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
+
 @RestController
 @Slf4j
 @RequestMapping("/user")
@@ -19,7 +21,8 @@ public class UserController {
     private LoginService loginService;
 
     @PostMapping("/login")
-    public ResponseResult login(User user) throws Exception {
+    public ResponseResult<Map<String, String>> login(User user) throws Exception {
+        log.info("进入方法");
         return loginService.login(user);
     }
 

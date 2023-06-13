@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS user (
 );
 
 CREATE TABLE IF NOT EXISTS role (
-    user_id BIGINT PRIMARY KEY NOT NULL,
+    id BIGINT PRIMARY KEY NOT NULL,
     name VARCHAR(255) NOT NULL
 );
 
@@ -43,7 +43,7 @@ VALUES (1, 'user1', '$2a$10$tKL9ZeqmqClYS0XRNrRKDeXWE.YGIK/Ap5kRVYsuV2FesYmjrohv
        (3, 'user3', '$2a$10$qaNkhFCLX0K34BvOaF0rheb1YVmqPMPymhSC/sYY.FwzNLmF1ZDZC');
 
 -- 生成角色数据
-INSERT INTO role (user_id, name)
+INSERT INTO role (id, name)
 VALUES (1, 'ROLE_role1'),
        (2, 'ROLE_role2'),
        (3, 'ROLE_role3');
