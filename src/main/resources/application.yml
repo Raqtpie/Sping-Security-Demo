@@ -4,10 +4,10 @@ server:
 spring:
   datasource:
     druid:
-      driver: com.mysql.cj.jdbc.Driver
+      driver-class-name: com.mysql.cj.jdbc.Driver
       url: jdbc:mysql://localhost:3306/security_demo_db?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT%2B8
       username: root
-      password:
+      password: 279410
 
 mybatis-plus:
   configuration:
@@ -16,3 +16,4 @@ mybatis-plus:
   global-config:
     db-config:
       id-type: assign_id
+  mapper-locations: classpath*:/mapper/**/*.xml

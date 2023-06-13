@@ -11,14 +11,14 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * 用户表(User)实体类
+ * 权限表(Permission)实体类
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@TableName(value = "user")
-public class User implements Serializable {
-    private static final long serialVersionUID = 54123124465465412L;
+@TableName(value = "permission")
+public class Permission implements Serializable {
+    private static final long serialVersionUID = 54123124465465421L;
 
     /**
      * 主键 id
@@ -26,21 +26,9 @@ public class User implements Serializable {
     @TableId
     private Long id;
     /**
-     * 用户名
+     * url
      */
-    private String userName;
-    /**
-     * 密码
-     */
-    private String password;
-    /**
-     * 账号状态（0正常 1停用）
-     */
-    private Integer status;
-    /**
-     * 是否注销（0正常 1注销）
-     */
-    private Integer delFlag;
+    private String url;
     /**
      * 角色
      */
