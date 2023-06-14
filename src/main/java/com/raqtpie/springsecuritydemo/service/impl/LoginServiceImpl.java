@@ -15,6 +15,7 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 @Service
@@ -50,7 +51,7 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    public ResponseResult<String> logout(HttpServerRequest request) {
+    public ResponseResult<String> logout(HttpServletRequest request) {
         String token = request.getHeader("Authorization");
         tokenBlackListService.addTokenToBlackList(token);
         return ResponseResult.success("注销成功");

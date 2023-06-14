@@ -12,9 +12,13 @@ import com.raqtpie.springsecuritydemo.service.TokenBlackListService;
 import com.raqtpie.springsecuritydemo.service.impl.UserDetailsServiceImpl;
 import com.raqtpie.springsecuritydemo.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AuthorizationServiceException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -32,6 +36,9 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
 
+    @Autowired
+    private AuthenticationEntryPoint authenticationEntryPoint;
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String token = request.getHeader("Authorization");
@@ -39,14 +46,17 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
-        if (tokenBlackListService.isTokenBlacklisted(token)) {
-            throw new RuntimeException("token已失效");
-        }
         if (!JwtUtil.isTokenEffective(token)) {
-            throw new RuntimeException("token非法");
+            authenticationEntryPoint.commence(request, response, new BadCredentialsException("token已失效"));
+            return;
+        }
+        if (tokenBlackListService.isTokenBlacklisted(token)) {
+            authenticationEntryPoint.commence(request, response, new BadCredentialsException("token已失效"));
+            return;
         }
         if (JwtUtil.isTokenExpired(token)) {
-            throw new RuntimeException("用户未登录或token已过期");
+            authenticationEntryPoint.commence(request, response, new BadCredentialsException("token已过期"));
+            return;
         }
         String userJson = JwtUtil.extractSubject(token);
         LoginUser loginUser = JSONUtil.toBean(userJson, LoginUser.class);

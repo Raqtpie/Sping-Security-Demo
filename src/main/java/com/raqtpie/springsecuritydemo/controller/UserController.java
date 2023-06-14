@@ -6,11 +6,9 @@ import com.raqtpie.springsecuritydemo.domain.User;
 import com.raqtpie.springsecuritydemo.service.LoginService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 @RestController
@@ -21,13 +19,13 @@ public class UserController {
     private LoginService loginService;
 
     @PostMapping("/login")
-    public ResponseResult<Map<String, String>> login(User user) throws Exception {
+    public ResponseResult<Map<String, String>> login(@RequestBody User user) throws Exception {
         log.info("进入方法");
         return loginService.login(user);
     }
 
     @GetMapping("/logout")
-    public ResponseResult<String> logout(HttpServerRequest request) {
+    public ResponseResult<String> logout(HttpServletRequest request) {
         return loginService.logout(request);
     }
 }

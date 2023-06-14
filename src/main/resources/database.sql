@@ -8,31 +8,36 @@ DROP TABLE IF EXISTS user_role;
 DROP TABLE IF EXISTS permission;
 DROP TABLE IF EXISTS role_permission;
 
-CREATE TABLE IF NOT EXISTS user (
-    id BIGINT PRIMARY KEY NOT NULL,
-    username VARCHAR(255) NOT NULL,
-    password VARCHAR(255) NOT NULL,
-    status INT DEFAULT 0,
+CREATE TABLE IF NOT EXISTS user
+(
+    id       BIGINT PRIMARY KEY NOT NULL,
+    username VARCHAR(255)       NOT NULL,
+    password VARCHAR(255)       NOT NULL,
+    status   INT DEFAULT 0,
     del_flag INT DEFAULT 0
 );
 
-CREATE TABLE IF NOT EXISTS role (
-    id BIGINT PRIMARY KEY NOT NULL,
-    name VARCHAR(255) NOT NULL
+CREATE TABLE IF NOT EXISTS role
+(
+    id   BIGINT PRIMARY KEY NOT NULL,
+    name VARCHAR(255)       NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS user_role (
+CREATE TABLE IF NOT EXISTS user_role
+(
     user_id BIGINT NOT NULL,
     role_id BIGINT NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS permission (
-    id BIGINT PRIMARY KEY NOT NULL,
-    url VARCHAR(255) NOT NULL
+CREATE TABLE IF NOT EXISTS permission
+(
+    id  BIGINT PRIMARY KEY NOT NULL,
+    url VARCHAR(255)       NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS role_permission (
-    role_id BIGINT NOT NULL,
+CREATE TABLE IF NOT EXISTS role_permission
+(
+    role_id       BIGINT NOT NULL,
     permission_id BIGINT NOT NULL
 );
 
@@ -52,7 +57,8 @@ VALUES (1, 'ROLE_role1'),
 INSERT INTO permission (id, url)
 VALUES (1, '/api/resource1'),
        (2, '/api/resource2'),
-       (3, '/api/resource3');
+       (3, '/api/resource3'),
+       (4, '/user/logout');
 
 -- 生成用户-角色关系数据
 INSERT INTO user_role (user_id, role_id)
@@ -64,4 +70,7 @@ VALUES (1, 1),
 INSERT INTO role_permission (role_id, permission_id)
 VALUES (1, 1),
        (2, 2),
-       (3, 3);
+       (3, 3),
+       (1, 4),
+       (2, 4),
+       (3, 4);
