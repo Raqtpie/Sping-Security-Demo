@@ -28,7 +28,6 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public ResponseResult<Map<String, String>> login(User user) throws Exception {
-        // fixme：登录仍被鉴权
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
         Authentication authenticate = authenticationConfiguration.getAuthenticationManager().authenticate(authenticationToken);
 
