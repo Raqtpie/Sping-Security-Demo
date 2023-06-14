@@ -45,7 +45,6 @@ public class LoginServiceImpl implements LoginService {
         map.put("token", token);
 
         return ResponseResult.success(map, "登录成功");
-//        return ResponseResult.success(null, "111");
     }
 
     @Override
