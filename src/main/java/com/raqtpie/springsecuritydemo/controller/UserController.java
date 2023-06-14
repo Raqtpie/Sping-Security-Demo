@@ -17,6 +17,11 @@ public class UserController {
     @Autowired
     private LoginService loginService;
 
+    @PostMapping("/addUser")
+    public ResponseResult<String> addUser(@RequestBody User user) {
+        return loginService.addUser(user);
+    }
+
     @PostMapping("/login")
     public ResponseResult<Map<String, String>> login(@RequestBody User user) throws Exception {
         log.info("进入方法");

@@ -39,6 +39,7 @@ class SpringSecurityDemoApplicationTests {
         System.out.println(new BCryptPasswordEncoder().encode("password1"));
         System.out.println(new BCryptPasswordEncoder().encode("password2"));
         System.out.println(new BCryptPasswordEncoder().encode("password3"));
+        System.out.println(new BCryptPasswordEncoder().encode("admin"));
     }
 
     @Test

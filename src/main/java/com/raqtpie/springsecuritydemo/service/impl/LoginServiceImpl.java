@@ -1,6 +1,8 @@
 package com.raqtpie.springsecuritydemo.service.impl;
 
 import cn.hutool.json.JSONUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.raqtpie.springsecuritydemo.dao.UserDao;
 import com.raqtpie.springsecuritydemo.domain.LoginUser;
 import com.raqtpie.springsecuritydemo.service.LoginService;
 import com.raqtpie.springsecuritydemo.common.ResponseResult;
@@ -12,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,6 +23,12 @@ import java.util.*;
 @Service
 @Slf4j
 public class LoginServiceImpl implements LoginService {
+    @Autowired
+    private UserDao userDao;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Autowired
     private TokenBlackListService tokenBlackListService;
 
@@ -52,5 +61,16 @@ public class LoginServiceImpl implements LoginService {
         String token = request.getHeader("Authorization");
         tokenBlackListService.addTokenToBlackList(token);
         return ResponseResult.success("注销成功");
+    }
+
+    @Override
+    public ResponseResult<String> addUser(User user) {
+        String encode = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encode);
+        userDao.insert(user);
+        User userTemp = userDao.selectOne(new LambdaQueryWrapper<User>().eq(User::getUsername, user.getUsername()));
+        Long userId = userTemp.getId();
+        userDao.addRoleWithUserId(userId, 1L);
+        return ResponseResult.success("注册成功成功");
     }
 }

@@ -9,4 +9,6 @@ import java.util.Map;
 public interface LoginService {
     ResponseResult<Map<String, String>> login(User user) throws Exception;
     ResponseResult<String> logout(HttpServletRequest request);
+
+    ResponseResult<String> addUser(User user);
 }
