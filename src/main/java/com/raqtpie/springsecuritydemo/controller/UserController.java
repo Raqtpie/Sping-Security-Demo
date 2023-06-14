@@ -1,6 +1,5 @@
 package com.raqtpie.springsecuritydemo.controller;
 
-import cn.hutool.http.server.HttpServerRequest;
 import com.raqtpie.springsecuritydemo.common.ResponseResult;
 import com.raqtpie.springsecuritydemo.domain.User;
 import com.raqtpie.springsecuritydemo.service.LoginService;

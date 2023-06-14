@@ -2,23 +2,16 @@ package com.raqtpie.springsecuritydemo.filter;
 
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.raqtpie.springsecuritydemo.dao.RoleDao;
-import com.raqtpie.springsecuritydemo.dao.UserDao;
 import com.raqtpie.springsecuritydemo.domain.LoginUser;
-import com.raqtpie.springsecuritydemo.domain.Role;
-import com.raqtpie.springsecuritydemo.domain.User;
 import com.raqtpie.springsecuritydemo.service.TokenBlackListService;
 import com.raqtpie.springsecuritydemo.service.impl.UserDetailsServiceImpl;
 import com.raqtpie.springsecuritydemo.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.AuthorizationServiceException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.AuthenticationEntryPoint;
-import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
