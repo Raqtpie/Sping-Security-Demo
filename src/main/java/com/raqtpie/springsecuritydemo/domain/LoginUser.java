@@ -16,13 +16,12 @@ import java.util.List;
 @NoArgsConstructor
 public class LoginUser implements UserDetails {
     private User user;
-    private List<Role> roles;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
         // 获取当前用户的角色
-        for (Role role : roles) {
+        for (Role role : user.getRoles()) {
             authorities.add(new SimpleGrantedAuthority(role.getName()));
         }
         return authorities;

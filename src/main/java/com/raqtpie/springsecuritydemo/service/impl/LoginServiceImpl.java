@@ -28,6 +28,7 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public ResponseResult<Map<String, String>> login(User user) throws Exception {
+        // fixme：登录仍被鉴权
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
         Authentication authenticate = authenticationConfiguration.getAuthenticationManager().authenticate(authenticationToken);
 
@@ -45,6 +46,7 @@ public class LoginServiceImpl implements LoginService {
         map.put("token", token);
 
         return ResponseResult.success(map, "登录成功");
+//        return ResponseResult.success(null, "111");
     }
 
     @Override

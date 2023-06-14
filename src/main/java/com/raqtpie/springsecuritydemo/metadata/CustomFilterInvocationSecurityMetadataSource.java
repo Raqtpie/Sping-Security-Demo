@@ -48,7 +48,7 @@ public class CustomFilterInvocationSecurityMetadataSource implements FilterInvoc
             }
         }
 
-        // 没有匹配上的资源，都是登录访问
+        // 没有匹配上的资源，无需权限
         return SecurityConfig.createList("ROLE_LOGIN");
     }
 

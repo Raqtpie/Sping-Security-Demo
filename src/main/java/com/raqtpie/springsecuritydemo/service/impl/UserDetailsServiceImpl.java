@@ -33,7 +33,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         List<Role> roles = roleDao.getListByUserId(user.getId());
         LoginUser loginUser = new LoginUser();
         loginUser.setUser(user);
-        loginUser.setRoles(roles);
+        loginUser.getUser().setRoles(roles) ;
         return loginUser;
     }
 }

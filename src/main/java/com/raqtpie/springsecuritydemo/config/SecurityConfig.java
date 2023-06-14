@@ -36,6 +36,12 @@ public class SecurityConfig {
     private AccessDeniedHandler accessDeniedHandler;
 
     @Autowired
+    private CustomFilterInvocationSecurityMetadataSource customFilterInvocationSecurityMetadataSource;
+
+    @Autowired
+    private CustomAccessDecisionManager customAccessDecisionManager;
+
+    @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService);
     }
@@ -62,42 +68,37 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-
                 .authorizeRequests()
                 // 对于登录接口 允许匿名访问
                 .antMatchers("/user/login").anonymous()
                 // 开放open接口 允许匿名访问 且 登录用户也可以访问
-                .antMatchers("/open/resource").permitAll()
+                .antMatchers("/open/**").permitAll()
                 // 除上面外的所有请求全部需要鉴权认证
-                .anyRequest().authenticated().withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
+                .anyRequest().authenticated()
+                .withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
                     @Override
                     public <O extends FilterSecurityInterceptor> O postProcess(O object) {
-                        object.setSecurityMetadataSource(cfisms());
-                        object.setAccessDecisionManager(cadm());
+                        object.setSecurityMetadataSource(customFilterInvocationSecurityMetadataSource);
+                        object.setAccessDecisionManager(customAccessDecisionManager);
                         return object;
                     }
-                }).and()
+                })
+                .and()
                 //关闭csrf
                 .csrf().disable()
                 //不通过Session获取SecurityContext
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-        http.addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
+        http
+                .addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
 
-        http.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint).accessDeniedHandler(accessDeniedHandler);
+        http
+                .exceptionHandling()
+                .authenticationEntryPoint(authenticationEntryPoint)
+                .accessDeniedHandler(accessDeniedHandler);
 
         http.cors();
 
         return http.build();
-    }
-
-    @Bean
-    CustomFilterInvocationSecurityMetadataSource cfisms() {
-        return new CustomFilterInvocationSecurityMetadataSource();
-    }
-
-    @Bean
-    CustomAccessDecisionManager cadm() {
-        return new CustomAccessDecisionManager();
     }
 }

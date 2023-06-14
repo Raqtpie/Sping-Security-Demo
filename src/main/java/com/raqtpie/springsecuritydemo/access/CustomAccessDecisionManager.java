@@ -29,9 +29,10 @@ public class CustomAccessDecisionManager implements AccessDecisionManager {
 
         // 当前登录用户所具备的角色信息和当前请求所需要的角色信息进行对比
         for (ConfigAttribute configAttribute : configAttributes) {
-            // 当前请求需要的角色信息为ROLE_LOGIN，表示当前请求需要登录后才能访问
+            // 当前请求需要的角色信息为ROLE_LOGIN，表示当前请求无需权限
             if ("ROLE_LOGIN".equals(configAttribute.getAttribute()) && authentication instanceof AnonymousAuthenticationToken) {
-                throw new AccessDeniedException("尚未登录，请登录");
+                return;
+//                throw new AccessDeniedException("尚未登录，请登录");
             }
 
             // 当前请求需要的角色信息和当前登录用户所具备的角色信息进行对比
